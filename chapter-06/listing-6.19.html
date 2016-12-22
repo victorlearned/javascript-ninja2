@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Combining Generators and Promises</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+    <script src="getJSON.js"></script>
+    <script>
+      "use strict";
+
+      //Function using async results should be able to pause while waiting
+      //for results. Notice the function* to use a generator
+      async(function* () {
+        try {
+          //yield on each ASYNC task
+          const ninjas = yield getJSON("data/ninjas.json");
+          const missions = yield getJSON(ninjas[0].missionsUrl);
+          const missionDescription = yield getJSON(missions[0].detailsUrl);
+
+          assert(ninjas !== null && missions !== null && missionDescription !== null,
+                "All ready!");
+        } catch(e) {
+          fail("Failed to get mission details");
+        }
+      });
+
+      function async(generator) {
+        const iterator = generator();
+
+        //Defines a helper function that will control our generator
+        function handle(iteratorResult) {
+          //stops when the generator has no more results
+          if(iteratorResult.done) {
+            return;
+          }
+
+          const iteratorValue = iteratorResult.value;
+
+          //if generated value is a promise register a succes & failure
+          //callback. This is the ASYNC part. If this promise succeeds,
+          //great, resume the generator and send in the promsied value.
+          //If there's an error throw an exception to the generator.
+          if(iteratorValue instanceof Promise) {
+            iteratorValue.then(res => handle(iterator.next(res)))
+                              .catch(err => iterator.throw(err));
+          }
+        }
+
+        //Restarts the generator execution
+        try {
+          handle(iterator.next());
+        } catch(e) {
+          iterator.throw(e);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <p>Has to be run on a server</p>
+  </body>
+</html>
