@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Defining getters and setters with Object.defineProperty</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      "use strict";
+
+      //Defines a constructor function
+      function Ninja() {
+        //Defines a 'private' variable that will be accessible through function closures
+        let _skillLevel = 0;
+
+        //Uses the built-in Object.defineProperty to define a skillLevel property
+        Object.defineProperty(this, 'skillLevel', {
+          //A get method that will be called whenever we read the skillLevel property
+          get: () => {
+            report("The get method is called");
+            return _skillLevel;
+          },
+          //A set method that will be called whenever we assign a value to the skillLevel property
+          set: value => {
+            report("The set method is called");
+            _skillLevel = value;
+          }
+        });
+      }
+
+      const ninja = new Ninja();
+      //Can't acess the private variable directly but we can through the getter method
+      assert(typeof ninja._skillLevel === "undefined",
+            "We cannot access a 'private' property _skillLevel");
+      assert(ninja.skillLevel === 0, "The getter can access the 'private' property _skillLevel");
+      //Set method implicitly called when assigning to the skillLevel property
+      ninja.skillLevel = 10;
+      assert(ninja.skillLevel === 10, "Used the setter to update the 'private' property");
+    </script>
+  </body>
+</html>
