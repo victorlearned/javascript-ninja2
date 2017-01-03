@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ES6 classes</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      "use strict";
+
+      class Ninja{
+        constructor(name){
+          this.name = name;
+        }
+
+        swingSword() {
+          return true;
+        }
+      }
+
+      const ninja = new Ninja("Yoshi");
+
+      assert(ninja instanceof Ninja, "ninja is an instanceof Ninja");
+      assert(ninja.name === "Yoshi", "Named Yoshi");
+      assert(ninja.swingSword(), "and he can use the swingSword method");
+    </script>
+  </body>
+</html>

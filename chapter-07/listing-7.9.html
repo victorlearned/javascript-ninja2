@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Configuring properties</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      "use strict";
+
+      //Creates an empty object; uses assignments to add 2 properties
+      const ninja = {};
+      ninja.name = "Yoshi";
+      ninja.weapon = "kusarigama";
+
+      //The built-in Object.defineProperty method is used to fine-tune the property
+      //configuration details
+      Object.defineProperty(ninja, "sneaky", {
+        configurable: false,
+        enumerable: false,
+        value: true,
+        writable: true
+      });
+
+      assert("sneaky" in ninja, "We can access sneaky property in ninja");
+
+      //Ues the for-in loop to iterate over ninja's enumerable properties which
+      //Does NOT include sneaky 
+      for(let prop in ninja){
+        assert(prop !== undefined, "An enumerated property: " + prop);
+      }
+    </script>
+  </body>
+</html>

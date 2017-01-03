@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The instanceof operator</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      function Person(){}
+      function Ninja(){}
+
+      Ninja.prototype = new Person();
+
+      const ninja = new Ninja();
+
+      assert(ninja instanceof Ninja, "ninja is an instanceof Ninja!");
+      assert(ninja instanceof Person, "ninja is also an instanceof a Person");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ES6 Inheritance</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      "use strict";
+
+      class Person {
+        constructor(name) {
+          this.name = name;
+        }
+
+        dance() {
+          return true;
+        }
+      }
+
+      class Ninja extends Person {
+        constructor(name, weapon) {
+          super(name);
+          this.weapon = weapon;
+        }
+
+        wieldWeapon() {
+          return true;
+        }
+      }
+
+      const person = new Person("Bob");
+
+      assert(person instanceof Person, "person is an instanceof Person");
+      assert(person.dance(), "person can access dance method");
+      assert(person.name === "Bob", "We can access name property");
+      assert(!(person instanceof Ninja), "person is not an instanceof a Ninja");
+      assert(typeof person.wieldWeapon === "undefined", "person cannot access Ninja class methods");
+
+      const ninja = new Ninja("Yoshi", "Wakizashi");
+      assert(ninja instanceof Ninja, "ninja is an instanceof Ninja");
+      assert(ninja.wieldWeapon(), "ninja can access wieldWeapon method");
+      assert(ninja instanceof Person, "ninja is also an instanceof person because of extends keyword");
+      assert(ninja.name === "Yoshi", "ninja can access the name property");
+      assert(ninja.dance(), "ninja can access dance method from Person class because of inheritance");
+    </script>
+  </body>
+</html>

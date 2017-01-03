@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Static Methods</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      "use strict";
+
+      //uses the class keyword to start specifying an ES6 class
+      class Ninja {
+        //Defines a constructor function that will be called when we call the class with the keyword new
+        constructor(name, level) {
+          this.name = name;
+          this.level = level;
+        }
+
+        swingSword() {
+          return true;
+        }
+
+        //Uses the static keyword to make a static method. Accessible only by class not by instances of the class
+        static compare(ninja1, ninja2) {
+          return ninja1.level - ninja2.level;
+        }
+      }
+
+      const ninja1 = new Ninja("Yoshi", 4);
+      const ninja2 = new Ninja("Hatori", 3);
+
+      assert(typeof ninja1.compare === "undefined" && typeof ninja2.compare === "undefined",
+            "The ninja instances can't access the compare static method");
+      assert(Ninja.compare(ninja1, ninja2) > 0, "The Ninja class can do the comparison");
+      assert(typeof Ninja.swingSword === "undefined", "The Ninja class cannot access the swingSword method since it's not static");
+    </script>
+  </body>
+</html>
