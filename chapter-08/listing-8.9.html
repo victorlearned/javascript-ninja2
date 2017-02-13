@@ -1,5 +1,35 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
-  <body></body>
+  <head>
+    <meta charset="utf-8">
+    <title>Logging with Proxies</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+    "use strict";
+    //function that takes a target object and makes it loggable
+      function makeLoaggle(target) {
+        return new Proxy(target,  //creates a new proxy that wraps target
+          get: (target, property) => { //a get trap that logs reads
+            report("Reading " + property);
+            return target[property];
+          },
+
+          set: (target, property, value) => { //set trap that logs writes
+            report("Writing value " + value + " to " + property);
+            target[property] = value;
+          }
+        });
+
+        let ninja = { name: "Yoshi" };
+        ninja = makeLoaggle(ninja);
+
+        //reads and writes to our proxy object. These actions are logged by the proxy traps
+        assert(ninja.name === "Yoshi", "we can access ninja.name");
+        ninja.weapon = "sword";
+      }
+    </script>
+  </body>
 </html>

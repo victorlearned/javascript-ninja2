@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Auto-populating properties with proxies</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      "use strict";
+
+      function Folder() {
+        return new Proxy({}, {
+          get: (target, property) => {
+            report("Reading " + property);
+
+            if(!(property in target)) { //if the property doesn't exist create it
+              target[property] = new Folder();
+            }
+
+            return target[property];
+          }
+        });
+      }
+
+      const rootFolder = new Folder();
+
+      try {
+        //whenever a property is accessed the get trap creates a property if it doesn't exist dodging the exception
+        rootFolder.ninjasDir.firstNinjasDir.ninjasFile = "yoshi.txt";
+        pass("An exception wasn't raised");
+      } catch(e) {
+        fail("An exception occurred");
+      }
+    </script>
+  </body>
+</html>

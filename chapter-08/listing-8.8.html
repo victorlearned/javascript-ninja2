@@ -6,5 +6,28 @@
     <link rel="stylesheet" href="../assert.css">
     <script src="../assert.js"></script>
   </head>
-  <body></body>
+  <body>
+    <script>
+      "use strict";
+
+      function Ninja() {
+        let _skillLevel = 0;
+
+        Object.defineProperty(this, 'skillLevel', {
+          get: () => {
+            report("skillLevel get method is called"); //log whenever theproperty is read
+            return _skillLevel;
+          },
+          set: (value) => {
+            report("skillLevel set method is called"); //log whenever the property is set
+            _skillLevel = value;
+          }
+        });
+      }
+
+      const ninja = new Ninja();
+      ninja.skillLevel; //reads the skillLevel prop and triggers get method
+      ninja.skillLevel = 4;
+    </script>
+  </body>
 </html>

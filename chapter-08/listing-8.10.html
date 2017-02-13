@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Measuring performance with proxies</title>
+    <link rel="stylesheet" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      "use strict";
+
+      function isPrime(number) {
+        if(number < 2) {
+          return false;
+        }
+
+        for(let i = 2; i < number; i++) {
+          if(number % i === 0) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      //Wraps the isPrime function within a Proxy
+      isPrime = new Proxy(isPrime, {
+        apply: (target, thisArg, args) => { //provides an apply trap that will be called whenever a proxy is called as a function
+          console.time("isPrime");
+
+          //invokes the target function
+          const result = target.apply(thisArg, args);
+
+          console.timeEnd("isPrime");
+
+          return result;
+        }
+      });
+
+      isPrime(1299827);
+    </script>
+  </body>
+</html>
