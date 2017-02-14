@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Storing a colleciton of unique functions</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../assert.css">
+    <script src="../assert.js"></script>
+  </head>
+  <body>
+    <script>
+      var store = {
+        nextId: 1, //keeps track of the next available ID to be assigned
+        cache: {}, //creates an objec tto serve as a cache in which we'll store functions
+        add: function(fn) { //adds functions to the cache but only if they are unqiue
+          if(!fn.id) {
+            fn.id = this.nextId++;
+            this.cache[fn.id] = fn;
+            return true;
+          }
+        }
+      };
+
+      function ninja(){}
+
+      assert(store.add(ninja),
+        "function was safely added");
+      assert(!store.add(ninja),
+        "But it was only added once");
+    </script>
+  </body>
+</html>
